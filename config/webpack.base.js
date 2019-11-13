@@ -2,6 +2,10 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const {
+    CleanWebpackPlugin
+} = require('clean-webpack-plugin') // 自动清除沉余js
+
+const {
     resolve
 } = require('./utils');
 
@@ -77,28 +81,53 @@ module.exports = {
             { // 图片资源太小转成内联，减少http请求
                 test: /\.(jpg|jpeg|png)$/,
                 use: [{
-                    loader: 'url-loader', // 是对file-loader的封装
-                    options: { // 如果小于1024转成base64
-                        limit: 1024,
-                        name: '[name].[ext]',
-                        outputPath: 'images/', //输出到images文件夹
+                        loader: 'url-loader', // 是对file-loader的封装
+                        options: { // 如果小于1024转成base64
+                            limit: 1024,
+                            name: '[name].[ext]',
+                            outputPath: 'images/', //输出到images文件夹
+                        }
+                    },
+                    {
+                        loader: 'image-webpack-loader', // 压缩图片
+                        options: {
+                            mozjpeg: {
+                                progressive: true,
+                                quality: 65
+                            },
+                            // optipng.enabled: false will disable optipng
+                            optipng: {
+                                enabled: false,
+                            },
+                            pngquant: {
+                                quality: [0.65, 0.90],
+                                speed: 4
+                            },
+                            gifsicle: {
+                                interlaced: false,
+                            },
+                            // the webp option will enable WEBP
+                            webp: {
+                                quality: 75
+                            }
+                        }
                     }
-                }]
+                ]
             },
             {
                 test: /\.js$/,
                 use: 'babel-loader',
                 include: /src/, // 只转化src目录下的js
                 exclude: /node_modules/ // 排除掉node_modules，优化打包速度
+            },
+            {
+                test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+                loader: 'url-loader',
+                options: {
+                    limit: 10000,
+                    outputPath: 'fonts/', //输出到images文件夹
+                }
             }
-            // {
-            //     test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-            //     loader: 'url-loader',
-            //     options: {
-            //         limit: 10000,
-            //         name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
-            //     }
-            // }
         ]
     },
     plugins: [
@@ -113,6 +142,10 @@ module.exports = {
         }),
         extractAppCSS,
         new VueLoaderPlugin(),
+        new CleanWebpackPlugin({
+            cleanAfterEveryBuildPatterns: ['dist'],
+            verbose: true
+        })
     ],
     optimization: { // 抽离共用部分
         splitChunks: {

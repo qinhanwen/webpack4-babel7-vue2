@@ -1,16 +1,15 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+// import Home from 'views/home';
 
 Vue.use(VueRouter);
 
-const Home = () => import('../views/home');
-
 export default new VueRouter({
-  mode: 'hash',
-  routes: [
-    {
-      path: '/',
-      component: Home
-    },
-  ]
+  // mode: 'hash',
+  // routes: [
+  //   {
+  //     path: '/',
+  //     component: Home
+  //   },
+  // ]
 })
