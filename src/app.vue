@@ -105,7 +105,7 @@ export default {
     margin: auto;
     width: 500px;
     height: 400px;
-    padding: 6px;
+    padding: 6px 6px 6px 6px;
     border: 2px solid #aeddf9;
     border-radius: 20px;
     background: rgba(0, 0, 0, 0.5);

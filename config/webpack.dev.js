@@ -1,8 +1,10 @@
 const webpackMerge = require("webpack-merge");
 const webpackBaseConfig = require('./webpack.base');
+
 const {
     resolve
 } = require('./utils');
+
 const config = require('./config');
 
 module.exports = () => {

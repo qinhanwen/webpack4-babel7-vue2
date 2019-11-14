@@ -1,23 +1,17 @@
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const {
-    CleanWebpackPlugin
-} = require('clean-webpack-plugin') // 自动清除沉余js
-
-const {
-    resolve
+    resolve,
+    isDevMode
 } = require('./utils');
 
-const extractAppCSS = new ExtractTextPlugin({
-    filename: './dist/css/main.[chunkhash:8].css',
-    allChunks: true,
-})
+const devMode = isDevMode();
 
 module.exports = {
     entry: resolve('./src/index.js'),
     output: { //输出文件
-        filename: "bundle.[hash:8].js", //文件名
+        filename: "static/js/[name].[hash:8].js", //文件名
         path: resolve('./dist') //路径
     },
     resolve: { // 配置别名
@@ -40,52 +34,27 @@ module.exports = {
                 exclude: /node_modules/,
                 loader: 'vue-loader',
                 options: {
-                    extractCSS: true,
-                    loaders: {
-                        scss: extractAppCSS.extract({
-                            fallback: 'vue-style-loader',
-                            use: [{
-                                    loader: 'css-loader',
-                                    options: {
-                                        sourceMap: true
-                                    }
-                                },
-                                {
-                                    loader: 'postcss-loader',
-                                    options: {
-                                        sourceMap: true
-                                    }
-                                },
-                                {
-                                    loader: 'sass-loader',
-                                    options: {
-                                        sourceMap: true
-                                    }
-                                }
-                            ]
-                        })
-                    }
+                    cacheBusting: true
                 }
             },
             {
-                // Vue Loader v15 no longer applies PostCSS transforms by default. You will need to use PostCSS via postcss-loader.
-                // onfiguration of PostCSS can be done via postcss.config.js or postcss-loader options. For details, consult postcss-loader docs.
                 test: /\.(css|scss)$/,
-                use: [
-                    'vue-style-loader',
+                use: [{
+                        loader: devMode ? 'vue-style-loader' : MiniCssExtractPlugin.loader,
+                    },
                     'css-loader',
                     'postcss-loader',
-                    'sass-loader'
-                ]
+                    'sass-loader',
+                ],
             },
             { // 图片资源太小转成内联，减少http请求
                 test: /\.(jpg|jpeg|png)$/,
                 use: [{
                         loader: 'url-loader', // 是对file-loader的封装
-                        options: { // 如果小于1024转成base64
-                            limit: 1024,
+                        options: {
+                            limit: 1024, // 如果小于10k转成base64
                             name: '[name].[ext]',
-                            outputPath: 'images/', //输出到images文件夹
+                            outputPath: 'static/images/', //输出到images文件夹
                         }
                     },
                     {
@@ -125,7 +94,7 @@ module.exports = {
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
-                    outputPath: 'fonts/', //输出到images文件夹
+                    outputPath: 'static/fonts/', //输出到images文件夹
                 }
             }
         ]
@@ -140,39 +109,7 @@ module.exports = {
                 collapseWhitespace: true //折叠 html 为一行
             }
         }),
-        extractAppCSS,
-        new VueLoaderPlugin(),
-        new CleanWebpackPlugin({
-            cleanAfterEveryBuildPatterns: ['dist'],
-            verbose: true
-        })
+        new VueLoaderPlugin()
     ],
-    optimization: { // 抽离共用部分
-        splitChunks: {
-            cacheGroups: {
-                commons: {
-                    // 抽离自己写的公共代码
-                    chunks: 'initial',
-                    name: 'common', // 打包后的文件名，任意命名
-                    minChunks: 2, //最小引用2次
-                    minSize: 0 // 只要超出0字节就生成一个新包
-                },
-                styles: {
-                    name: 'styles', // 抽离公用样式
-                    test: /\.css$/,
-                    chunks: 'all',
-                    minChunks: 2,
-                    enforce: true
-                },
-                vendor: {
-                    // 抽离第三方插件
-                    test: /node_modules/, // 指定是node_modules下的第三方包
-                    chunks: 'initial',
-                    name: 'vendor', // 打包后的文件名，任意命名
-                    // 设置优先级，防止和自定义的公共代码提取时被覆盖，不进行打包
-                    priority: 10
-                }
-            }
-        }
-    }
+
 }
