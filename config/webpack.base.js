@@ -41,6 +41,15 @@ module.exports = {
                     'css-loader',
                     'postcss-loader',
                     'sass-loader',
+                    {
+                        loader: 'sass-resources-loader',
+                        options: {
+                            sourceMap: true,
+                            resources: [
+                                resolve('src/common/index.scss'),
+                            ]
+                        }
+                    }
                 ],
             },
             { // 图片资源太小转成内联，减少http请求
