@@ -10,6 +10,10 @@ const config = require('./config');
 module.exports = () => {
     const devConfig = {
         mode: 'development',
+        output: { //输出文件
+            filename: "static/js/[name].js", //文件名
+            path: resolve('./dist') //路径
+        },
         devtool: 'eval-source-map', //生成用于开发环境的最佳品质的 source map
         devServer: { // 开发服务器配置
             port: config.PORT, // 端口号

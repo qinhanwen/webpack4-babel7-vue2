@@ -26,6 +26,10 @@ module.exports = () => {
 
     const prodConfig = {
         mode: 'production',
+        output: { //输出文件
+            filename: "static/js/[name].[chunkhash:8].js", //文件名
+            path: resolve('./dist') //路径
+        },
         performance: {
             hints: 'warning',
             //入口起点的最大体积

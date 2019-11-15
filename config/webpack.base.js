@@ -10,10 +10,6 @@ const devMode = isDevMode();
 
 module.exports = {
     entry: resolve('./src/index.js'),
-    output: { //输出文件
-        filename: "static/js/[name].[hash:8].js", //文件名
-        path: resolve('./dist') //路径
-    },
     resolve: { // 配置别名
         // 扩展名，比如import 'app.vue'，扩展后只需要写成import 'app'就可以了
         extensions: ['.js', '.vue', '.scss'],
