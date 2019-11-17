@@ -2,6 +2,7 @@ const webpackMerge = require("webpack-merge");
 const webpackBaseConfig = require('./webpack.base');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const {
     resolve
@@ -42,7 +43,7 @@ module.exports = () => {
             }
         },
         optimization: { // 抽离共用部分
-            minimizer: [new OptimizeCSSAssetsPlugin()],
+            minimizer: [new TerserPlugin(), new OptimizeCSSAssetsPlugin()],
             namedChunks: true, //除了 moduleId，我们知道分离出的 chunk 也有其 chunkId。同样的，chunkId 也有因其 chunkId 发生变化而导致缓存失效的问题。由于manifest与打出的 chunk 包中有chunkId相关数据，所以一旦如“增删页面”这样的操作导致 chunkId 发生变化，可能会影响很多的 chunk 缓存失效。
             runtimeChunk: { //在 webpack4 之前，抽离 manifest，需要使用 CommonsChunkPlugin，配置一个指定 name 属性为'manifest'的 chunk。在 webpack4 中，无需手动引入插件，配置 runtimeChunk 即可。
                 name: 'manifest'

@@ -45,9 +45,7 @@ module.exports = {
                         loader: 'sass-resources-loader',
                         options: {
                             sourceMap: true,
-                            resources: [
-                                resolve('src/common/index.scss'),
-                            ]
+                            resources: [resolve('src/common/index.scss')]
                         }
                     }
                 ],
