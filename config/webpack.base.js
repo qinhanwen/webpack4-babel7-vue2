@@ -1,6 +1,7 @@
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const {
     resolve,
     isDevMode
@@ -37,6 +38,9 @@ module.exports = {
                 test: /\.(css|scss)$/,
                 use: [{
                         loader: devMode ? 'vue-style-loader' : MiniCssExtractPlugin.loader,
+                        options: devMode ? {} : {//解决css图片路径问题
+                            publicPath: '../../',
+                        }
                     },
                     'css-loader',
                     'postcss-loader',
@@ -57,7 +61,7 @@ module.exports = {
                         options: {
                             limit: 1024, // 如果小于10k转成base64
                             name: '[name].[ext]',
-                            outputPath: 'static/images/', //输出到images文件夹
+                            outputPath: "static/images", //webpack打包后文件的输出目录
                         }
                     },
                     {
@@ -112,7 +116,8 @@ module.exports = {
                 collapseWhitespace: true //折叠 html 为一行
             }
         }),
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(),
+        new HardSourceWebpackPlugin()
     ],
 
 }
