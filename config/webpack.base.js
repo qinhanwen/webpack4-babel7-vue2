@@ -2,6 +2,11 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const HappyPack = require('happypack');
+const os = require('os'); //获取电脑的处理器有几个核心，作为配置传入
+const happyThreadPool = HappyPack.ThreadPool({
+    size: os.cpus().length
+});
 const {
     resolve,
     isDevMode
@@ -38,7 +43,7 @@ module.exports = {
                 test: /\.(css|scss)$/,
                 use: [{
                         loader: devMode ? 'vue-style-loader' : MiniCssExtractPlugin.loader,
-                        options: devMode ? {} : {//解决css图片路径问题
+                        options: devMode ? {} : { //解决css图片路径问题
                             publicPath: '../../',
                         }
                     },
@@ -92,7 +97,7 @@ module.exports = {
             },
             {
                 test: /\.js$/,
-                use: 'babel-loader',
+                use: ['happypack/loader?id=happy-babel-js'],
                 include: /src/, // 只转化src目录下的js
                 exclude: /node_modules/ // 排除掉node_modules，优化打包速度
             },
@@ -117,7 +122,12 @@ module.exports = {
             }
         }),
         new VueLoaderPlugin(),
-        new HardSourceWebpackPlugin()
+        new HardSourceWebpackPlugin(),
+        new HappyPack({ //开启多线程打包
+            id: 'happy-babel-js',
+            loaders: ['babel-loader?cacheDirectory=true'],
+            threadPool: happyThreadPool
+        }),
     ],
 
 }
