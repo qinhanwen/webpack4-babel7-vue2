@@ -115,7 +115,6 @@ module.exports = {
         new HtmlWebpackPlugin({
             filename: 'index.html', // 配置输出文件名和路径
             template: resolve('./src/index.html'), // 配置要被编译的html文件
-            hash: true,
             minify: { // 压缩
                 removeAttributeQuotes: true, //删除双引号
                 collapseWhitespace: true //折叠 html 为一行
