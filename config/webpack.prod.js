@@ -12,18 +12,8 @@ const {
     CleanWebpackPlugin
 } = require('clean-webpack-plugin') // 自动清除
 
-const plugins = [
-    new MiniCssExtractPlugin({
-        filename: 'static/css/base.[contenthash:8].css',
-    }),
-    new CleanWebpackPlugin({
-        cleanAfterEveryBuildPatterns: ['dist'],
-        verbose: true
-    })
-];
 
 module.exports = () => {
-    webpackBaseConfig.plugins = webpackBaseConfig.plugins.concat(plugins);
 
     const prodConfig = {
         mode: 'production',
@@ -42,6 +32,15 @@ module.exports = () => {
                 return assetFilename.endsWith('.js');
             }
         },
+        plugins: [
+            new MiniCssExtractPlugin({
+                filename: 'static/css/base.[contenthash:8].css',
+            }),
+            new CleanWebpackPlugin({
+                cleanAfterEveryBuildPatterns: ['dist'],
+                verbose: true
+            })
+        ],
         optimization: { // 抽离共用部分
             minimizer: [new TerserPlugin(), new OptimizeCSSAssetsPlugin()],
             namedChunks: true, //除了 moduleId，我们知道分离出的 chunk 也有其 chunkId。同样的，chunkId 也有因其 chunkId 发生变化而导致缓存失效的问题。由于manifest与打出的 chunk 包中有chunkId相关数据，所以一旦如“增删页面”这样的操作导致 chunkId 发生变化，可能会影响很多的 chunk 缓存失效。
