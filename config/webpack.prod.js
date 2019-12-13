@@ -3,6 +3,8 @@ const webpackBaseConfig = require('./webpack.base');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const PrerenderSPAPlugin = require('prerender-spa-plugin')
+const Renderer = PrerenderSPAPlugin.PuppeteerRenderer;
 
 const {
     resolve
@@ -39,7 +41,17 @@ module.exports = () => {
             new CleanWebpackPlugin({
                 cleanAfterEveryBuildPatterns: ['dist'],
                 verbose: true
-            })
+            }),
+            new PrerenderSPAPlugin({
+                staticDir: resolve('dist'), // 代码打包目录
+                routes: ['/'], // 要预渲染的页面路由
+                renderer: new Renderer({
+                    headless: true, // 渲染时显示浏览器窗口。对调试很有用。
+                    inject: {
+                        isPreRender: true
+                    }
+                })
+            }),
         ],
         optimization: { // 抽离共用部分
             minimizer: [new TerserPlugin(), new OptimizeCSSAssetsPlugin()],

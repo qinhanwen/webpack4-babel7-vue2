@@ -1,24 +1,28 @@
 <template>
   <div class="home">
-    123
+    <div @click="clickMe">data:{{data}}</div>
   </div>
 </template>
 
 <script>
 // import axios from 'axios'
 export default {
-  computed: {
- 
+  data() {
+    return {
+      data: 123
+    };
   },
   mounted() {
     //   ajax
   },
   methods: {
- 
+    clickMe() {
+      this.$router.push("/login");
+    }
   }
-}
+};
 </script>
 
 <style lang="scss">
-  @import './home';
+@import "./home";
 </style>
