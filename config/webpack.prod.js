@@ -51,7 +51,7 @@ module.exports = () => {
             splitChunks: {
                 chunks: "all",
                 cacheGroups: {
-                    verdor: {
+                    vendor: {
                         name: "vendor", // 打包后的文件名，任意命名
                         test: /node_modules/, // 匹配路径
                         priority: 10, // 权重
