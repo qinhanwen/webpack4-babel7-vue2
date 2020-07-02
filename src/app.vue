@@ -5,37 +5,38 @@
 </template>
 
 <script>
-import Axios from "axios";
-import home from 'views/home/home'
+import Axios from 'axios';
+import home from 'views/home/home';
+
 export default {
-  name: "App",
+  name: 'App',
   data() {
     return {
       dynamicValidateForm: {
         domains: [
           {
-            value: ""
+            value: ''
           }
         ],
-        email: ""
+        email: ''
       }
     };
   },
-  components:{
+  components: {
     home
   },
   methods: {
     send() {
-      Axios.get("/api/cors").then(res => {
+      Axios.get('/api/cors').then(res => {
         console.log(res);
       });
     },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert("submit!");
+          alert('submit!');
         } else {
-          console.log("error submit!!");
+          console.log('error submit!!');
           return false;
         }
       });
@@ -44,14 +45,14 @@ export default {
       this.$refs[formName].resetFields();
     },
     removeDomain(item) {
-      var index = this.dynamicValidateForm.domains.indexOf(item);
+      const index = this.dynamicValidateForm.domains.indexOf(item);
       if (index !== -1) {
         this.dynamicValidateForm.domains.splice(index, 1);
       }
     },
     addDomain() {
       this.dynamicValidateForm.domains.push({
-        value: "",
+        value: '',
         key: Date.now()
       });
     }
@@ -60,11 +61,11 @@ export default {
 </script>
 
 <style lang="scss">
-@import "./common/common";
-@import "./common/variable";
+@import './common/common';
+@import './common/variable';
 
 .wrapper {
-  background: url("./assets/images/login-page-bg.jpeg") no-repeat;
+  background: url('./assets/images/login-page-bg.jpeg') no-repeat;
   width: 100%;
   height: 100%;
   background-size: 100% 100%;
