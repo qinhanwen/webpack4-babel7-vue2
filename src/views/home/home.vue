@@ -3,22 +3,23 @@
     123
   </div>
 </template>
-
 <script>
-// import axios from 'axios'
 export default {
+  data() {
+    return {
+      key: 1
+    };
+  },
   props: {
-    body:""
+    body: ''
   },
   mounted() {
     console.log(this.body);
   },
-  methods: {
- 
-  }
-}
+  methods: {}
+};
 </script>
 
 <style lang="scss">
-  @import './home';
+@import './home';
 </style>

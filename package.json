@@ -7,6 +7,18 @@
     "dev": "webpack-dev-server --config ./config/webpack.dev.js",
     "build": "cross-env NODE_ENV=production webpack --config  ./config/webpack.prod.js"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,json,vue}": [
+      "eslint --fix",
+      "prettier --write",
+      "git add"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/qinhanwen/webpack4-babel7-vue2.git"
@@ -27,24 +39,34 @@
     "@babel/preset-env": "^7.7.1",
     "@babel/runtime-corejs2": "^7.7.2",
     "autoprefixer": "^9.7.1",
+    "babel-eslint": "^10.1.0",
     "babel-loader": "^8.0.6",
     "clean-webpack-plugin": "^3.0.0",
     "cross-env": "^6.0.3",
     "css-loader": "^3.2.0",
+    "eslint": "^7.3.1",
+    "eslint-config-ali": "^9.1.2",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "file-loader": "^4.2.0",
     "happypack": "^5.0.1",
     "hard-source-webpack-plugin": "^0.13.1",
     "html-webpack-plugin": "^3.2.0",
+    "husky": "^4.2.5",
     "image-webpack-loader": "^6.0.0",
+    "lint-staged": "^10.2.11",
     "mini-css-extract-plugin": "^0.8.0",
     "node-sass": "^4.13.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "postcss-loader": "^3.0.0",
+    "prettier": "^2.0.5",
     "sass-loader": "^8.0.0",
     "sass-resources-loader": "^2.0.1",
     "style-loader": "^1.0.0",
     "terser-webpack-plugin": "^2.2.1",
     "url-loader": "^2.2.0",
+    "vue-eslint-parser": "^7.1.0",
     "vue-loader": "^15.7.2",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.6.10",
