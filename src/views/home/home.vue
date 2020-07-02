@@ -7,11 +7,11 @@
 <script>
 // import axios from 'axios'
 export default {
-  computed: {
- 
+  props: {
+    body:""
   },
   mounted() {
-    //   ajax
+    console.log(this.body);
   },
   methods: {
  

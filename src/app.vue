@@ -1,11 +1,12 @@
 <template>
   <section class="wrapper">
-    <div @click="send">send</div>
+    <home></home>
   </section>
 </template>
 
 <script>
 import Axios from "axios";
+import home from 'views/home/home'
 export default {
   name: "App",
   data() {
@@ -19,6 +20,9 @@ export default {
         email: ""
       }
     };
+  },
+  components:{
+    home
   },
   methods: {
     send() {
