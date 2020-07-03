@@ -141,6 +141,17 @@ module.exports = {
       loaders: ['babel-loader?cacheDirectory=true'],
       threadPool: happyThreadPool
     }),
-    new FriendlyErrorsWebpackPlugin()
+    new FriendlyErrorsWebpackPlugin(),
+    function () {
+      this.hooks.done.tap('done', stats => {
+        if (
+          stats.compilation.errors &&
+          stats.compilation.errors.length &&
+          process.argv.indexOf('--watch') === -1
+        ) {
+          console.log('build error');
+        }
+      });
+    }
   ]
 };
