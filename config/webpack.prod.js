@@ -11,6 +11,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin'); // 自动清除
 module.exports = () => {
   const prodConfig = {
     mode: 'production',
+    stats: 'errors-only',
     output: {
       // 输出文件
       filename: 'static/js/[name].[chunkhash:8].js', // 文件名

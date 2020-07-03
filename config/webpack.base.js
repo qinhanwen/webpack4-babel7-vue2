@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const HappyPack = require('happypack');
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const os = require('os');
 // 获取电脑的处理器有几个核心，作为配置传入
 const happyThreadPool = HappyPack.ThreadPool({
@@ -139,6 +140,7 @@ module.exports = {
       id: 'happy-babel-js',
       loaders: ['babel-loader?cacheDirectory=true'],
       threadPool: happyThreadPool
-    })
+    }),
+    new FriendlyErrorsWebpackPlugin()
   ]
 };

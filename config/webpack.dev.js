@@ -15,6 +15,8 @@ module.exports = () => {
     },
     devtool: 'eval-source-map', // 生成用于开发环境的最佳品质的 source map
     devServer: {
+      stats: 'errors-only',
+      quiet: true,
       proxy: {
         '/api': {
           target: 'http://localhost:3001',
