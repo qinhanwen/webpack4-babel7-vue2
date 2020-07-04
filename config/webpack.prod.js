@@ -3,6 +3,9 @@ const webpackBaseConfig = require('./webpack.base');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
+
+const smp = new SpeedMeasurePlugin();
 
 const { resolve } = require('./utils');
 
@@ -74,5 +77,5 @@ module.exports = () => {
       }
     }
   };
-  return webpackMerge(webpackBaseConfig, prodConfig);
+  return smp.wrap(webpackMerge(webpackBaseConfig, prodConfig));
 };
