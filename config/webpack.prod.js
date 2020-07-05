@@ -3,9 +3,7 @@ const webpackBaseConfig = require('./webpack.base');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
-
-const smp = new SpeedMeasurePlugin();
+const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 
 const { resolve } = require('./utils');
 
@@ -38,6 +36,14 @@ module.exports = () => {
       new CleanWebpackPlugin({
         cleanAfterEveryBuildPatterns: ['dist'],
         verbose: true
+      }),
+      new HtmlWebpackExternalsPlugin({
+        externals: [
+          {
+            module: 'vue',
+            entry: 'https://lib.baomitu.com/vue/2.6.11/vue.common.js'
+          }
+        ]
       })
     ],
     optimization: {
@@ -77,5 +83,5 @@ module.exports = () => {
       }
     }
   };
-  return smp.wrap(webpackMerge(webpackBaseConfig, prodConfig));
+  return webpackMerge(webpackBaseConfig, prodConfig);
 };
